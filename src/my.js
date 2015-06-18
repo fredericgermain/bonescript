@@ -41,6 +41,7 @@ exports.is_ocp = function(callback) {
 };
 
 exports.is_cape_universal = function(callback) {
+    return true;
     var ocp = exports.is_ocp();
     if(debug) winston.debug('is_ocp() = ' + ocp);
     var cape_universal = exports.find_sysfsFile('cape-universal', ocp, 'cape-universal.', callback);
