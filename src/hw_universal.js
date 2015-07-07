@@ -83,7 +83,12 @@ exports.setPinMode = function(pin, pinData, template, resp, callback) {
         } catch (e) {
             fs.writeFileSync('/sys/class/gpio/export', pin.gpio);
         }
-            
+        if ((pinData & 0x08) === 0x08)
+             fs.writeFileSync('/sys/class/gpio/gpio' + pin.gpio + '/pull', 'disable');
+        else if ((pinData & 0x10) === 0x10)
+             fs.writeFileSync('/sys/class/gpio/gpio' + pin.gpio + '/pull', 'up');
+        else if ((pinData & 0x10) === 0x00)
+             fs.writeFileSync('/sys/class/gpio/gpio' + pin.gpio + '/pull', 'down');
     } else if(template == 'bspwm') {
         fs.writeFileSync(pinmux+"/state", 'pwm');
         pwmPrefix[pin.pwm.name] = '/sys/class/pwm/pwm' + pin.pwm.sysfs;
