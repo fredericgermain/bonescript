@@ -91,7 +91,7 @@ exports.setPinMode = function(pin, pinData, template, resp, callback) {
         else if ((pinData & 0x10) === 0x00)
              pullVal = 'down';
         try {
-            fs.writeFileSync('/sys/class/gpio/gpio' + pin.gpio + '/pull', pullVa
+            fs.writeFileSync('/sys/class/gpio/gpio' + pin.gpio + '/pull', pullVal);
         } catch (e) {
             console.log('could not set pull on gpio ' + pin.gpio);
         }
