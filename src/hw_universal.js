@@ -83,12 +83,18 @@ exports.setPinMode = function(pin, pinData, template, resp, callback) {
         } catch (e) {
             fs.writeFileSync('/sys/class/gpio/export', pin.gpio);
         }
+        var pullVal;
         if ((pinData & 0x08) === 0x08)
-             fs.writeFileSync('/sys/class/gpio/gpio' + pin.gpio + '/pull', 'disable');
+             pullVal = 'disable';
         else if ((pinData & 0x10) === 0x10)
-             fs.writeFileSync('/sys/class/gpio/gpio' + pin.gpio + '/pull', 'up');
+             pullVal = 'up';
         else if ((pinData & 0x10) === 0x00)
-             fs.writeFileSync('/sys/class/gpio/gpio' + pin.gpio + '/pull', 'down');
+             pullVal = 'down';
+        try {
+            fs.writeFileSync('/sys/class/gpio/gpio' + pin.gpio + '/pull', pullVa
+        } catch (e) {
+            console.log('could not set pull on gpio ' + pin.gpio);
+        }
     } else if(template == 'bspwm') {
         fs.writeFileSync(pinmux+"/state", 'pwm');
         pwmPrefix[pin.pwm.name] = '/sys/class/pwm/pwm' + pin.pwm.sysfs;
